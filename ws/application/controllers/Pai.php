@@ -9,6 +9,7 @@ class Pai extends CI_Controller {
   }
 
   public function verificaLogin(){
+
     $arrRet         = [];
     $arrRet["erro"] = true;
     $arrRet["msg"]  = "";
@@ -69,6 +70,7 @@ class Pai extends CI_Controller {
       }
 
       printaRetorno($arrRet);
+      gravaLog("Login executado. ArrRet: " . json_encode($arrRet));
 
     } catch (Exception $e) {
 
@@ -76,6 +78,7 @@ class Pai extends CI_Controller {
       $arrRet["erro"] = true;
       $arrRet["msg"]  = "Erro ao atualizar Marcas! Msg: " . $e->getMessage();
       printaRetorno($arrRet);
+      gravaLog("Login não executado. ArrRet: " . json_encode($arrRet));
 
     }
   }
