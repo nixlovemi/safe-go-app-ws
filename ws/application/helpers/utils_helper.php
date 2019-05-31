@@ -13,10 +13,10 @@ function proccessPost(){
     $jsonVars = json_decode($jsonStr);
   }
 
-  if(!isset($jsonVars->appkey) || $jsonVars->appkey != "9de08d707c705af476e6a33df1f34c1d"){
+  if(!isset($jsonVars->appkey) || $jsonVars->appkey != APP_KEY){
     $arrRet         = [];
     $arrRet["erro"] = true;
-    $arrRet["msg"]  = "Key de acesso inválida! (".$jsonVars->appkey.")" ;
+    $arrRet["msg"]  = "Key de acesso inválida!" ;
 
     echo json_encode($arrRet);
     die();
