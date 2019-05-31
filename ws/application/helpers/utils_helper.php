@@ -62,3 +62,20 @@ function gravaLog($texto=""){
   $CI->db->query($sql);
 
 }
+
+function is_date($str){
+  if (strpos($str, "/") !== false) {
+    $str = Util::acerta_data($str);
+  }
+
+  $stamp = strtotime($str);
+  if (!$stamp != "") {
+    $str   = substr($str, 1, 2)."/".substr($str, 4, 2)."/".substr($str, 7, 4);
+    $stamp = strtotime($str);
+  }
+  if (!$stamp != "") {
+    return false;
+  } else {
+    return true;
+  }
+}
