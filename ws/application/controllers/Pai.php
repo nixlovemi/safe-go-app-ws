@@ -144,42 +144,25 @@ class Pai extends CI_Controller {
           $arrRet["erro"] = true;
           $arrRet["msg"]  = "Não conseguimos encontrar a ID do solicitante!";
         } else {
-          /*$usuarioEscaped = $this->db->escape($usuario);
-          $senhaEscaped   = $this->db->escape($md5Senha);
+          $usuarioEscaped       = $this->db->escape($usuario);
+          $senhaEscaped         = $this->db->escape($md5Senha);
+          $nomeEscaped          = $this->db->escape($nome);
+          $validadeEscaped      = $this->db->escape($validade);
+          $idSolicitacaoEscaped = $this->db->escape($idSolicitacao);
 
-          $sql = "
-            SELECT pai_id
-                  ,pai_nome
-                  ,pai_validade
-                  ,pai_qr
-                  ,pai_id_solicitacao
-                  ,pai_aprovado
-            FROM tb_pai
-            WHERE pai_login = $usuarioEscaped
-            AND pai_senha = $senhaEscaped
+          $sql2 = "
+            INSERT INTO tb_pai(pai_login, pai_senha, pai_nome, pai_validade, pai_id_solicitacao, pai_qr)
+            VALUES ($usuarioEscaped, $senhaEscaped, $nomeEscaped, $validadeEscaped, $idSolicitacaoEscaped, $usuarioEscaped);
           ";
-          $query = $this->db->query($sql);
-          $row   = $query->row();
+          $this->db->query($sql2);
 
-          if(!$row){
+          if($this->db->error()["message"] != ""){
             $arrRet["erro"] = true;
-            $arrRet["msg"]  = "Usuário ou senha inválidos!";
+            $arrRet["msg"]  = "Erro ao cadastrar login temporário!";
           } else {
-            if($row->pai_aprovado == NULL){
-              $arrRet["erro"] = true;
-              $arrRet["msg"]  = "Esse usuário está aguardando aprovação!";
-            } else if ($row->pai_aprovado == 0){
-              $arrRet["erro"] = true;
-              $arrRet["msg"]  = "Esse usuário não está aprovado para fazer login!";
-            } else {
-              $arrRow     = (array) $row;
-              $jsonStrPai = json_encode($arrRow);
-
-              $arrRet["erro"] = false;
-              $arrRet["msg"]  = "Login efetuado com sucesso";
-              $arrRet["Pai"]  = $jsonStrPai;
-            }
-          }*/
+            $arrRet["erro"] = false;
+            $arrRet["msg"]  = "Login temporário cadastrado com sucesso!";
+          }
         }
       }
 
