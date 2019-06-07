@@ -179,4 +179,85 @@ class Pai extends CI_Controller {
 
     }
   }
+
+  public function solicitaResetSenha(){
+
+    $arrRet         = [];
+    $arrRet["erro"] = true;
+    $arrRet["msg"]  = "";
+
+    try{
+
+      // variaveis do post
+      $objVars = proccessPost();
+      $login   = $objVars->login ?? "";
+      // =================
+
+      if($login == ""){
+        $arrRet["erro"] = true;
+        $arrRet["msg"]  = "Informe o usuário prosseguir!";
+      } else {
+        $this->load->database();
+        $loginEscaped = $this->db->escape($login);
+
+        $sql = "
+          SELECT pai_id
+          FROM tb_pai
+          WHERE pai_login = $loginEscaped
+        ";
+        $query = $this->db->query($sql);
+        $row   = $query->row();
+
+        if(!$row){
+          $arrRet["erro"] = true;
+          $arrRet["msg"]  = "Usuário inválido! Verifique se você digitou o usuário corretamente.";
+        } else {
+          $paiId = $row->pai_id;
+
+          $sql2 = "
+            SELECT COUNT(*) AS cnt
+            FROM tb_pai_reset_senha
+            WHERE prs_pai_id = 1
+            AND prs_dtatendido IS NULL
+          ";
+          $query2 = $this->db->query($sql2);
+          $row2   = $query2->row();
+
+          if(!$row2 || $row2->cnt > 0){
+            $arrRet["erro"] = true;
+            $arrRet["msg"]  = "Você já tem uma solicitação de senha não atendida! Aguarde a escola entrar em contato.";
+          } else {
+            $paiIdEscaped = $this->db->escape($paiId);
+            $hojeEscaped  = $this->db->escape(date("Y-m-d H:i:s"));
+
+            $sql3 = "
+              INSERT INTO tb_pai_reset_senha(prs_pai_id, prs_dtsolicitado)
+              VALUES($paiIdEscaped, $hojeEscaped);
+            ";
+            $this->db->query($sql3);
+
+            if($this->db->error()["message"] != ""){
+              $arrRet["erro"] = true;
+              $arrRet["msg"]  = "Erro ao solicitar alteração de senha!";
+            } else {
+              $arrRet["erro"] = false;
+              $arrRet["msg"]  = "Solicitação de senha enviada com sucesso! A escola entrará em contato em breve.";
+            }
+          }
+        }
+      }
+
+      printaRetorno($arrRet);
+      gravaLog("Solicitação de senha executada. ArrRet: " . json_encode($arrRet));
+
+    } catch (Exception $e) {
+
+      $this->db->trans_rollback();
+      $arrRet["erro"] = true;
+      $arrRet["msg"]  = "Erro ao executar Login! Msg: " . $e->getMessage();
+      printaRetorno($arrRet);
+      gravaLog("Solicitação de senha não executada. ArrRet: " . json_encode($arrRet));
+
+    }
+  }
 }
