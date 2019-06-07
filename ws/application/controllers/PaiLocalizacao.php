@@ -20,6 +20,7 @@ class PaiLocalizacao extends CI_Controller {
       $paiId     = $objVars->pai_id ?? "";
       $latitude  = $objVars->latitude ?? "";
       $longitude = $objVars->longitude ?? "";
+      $problema  = $objVars->problema ?? false;
       // =================
 
       if($paiId == "" || $latitude == "" || $longitude == ""){
@@ -32,10 +33,11 @@ class PaiLocalizacao extends CI_Controller {
         $dataEscaped      = $this->db->escape(date('c'));
         $latitudeEscaped  = $this->db->escape($latitude);
         $longitudeEscaped = $this->db->escape($longitude);
+        $problemaEscaped  = $this->db->escape($problema);
 
         $sql = "
-          INSERT INTO tb_pai_localizacao(plo_pai_id, plo_datahora, plo_latitude, plo_longitude)
-          VALUES ($paiIdEscaped, $dataEscaped, $latitudeEscaped, $longitudeEscaped)
+          INSERT INTO tb_pai_localizacao(plo_pai_id, plo_datahora, plo_latitude, plo_longitude, plo_problema)
+          VALUES ($paiIdEscaped, $dataEscaped, $latitudeEscaped, $longitudeEscaped, $problemaEscaped)
         ";
         $query = $this->db->query($sql);
 
@@ -43,8 +45,10 @@ class PaiLocalizacao extends CI_Controller {
           $arrRet["erro"] = true;
           $arrRet["msg"]  = "Erro ao enviar localização!";
         } else {
+          $strProblema    = ($problema) ? " do problema ": " ";
+
           $arrRet["erro"] = false;
-          $arrRet["msg"]  = "Localização enviada com sucesso!";
+          $arrRet["msg"]  = "Localização".$strProblema."enviada com sucesso!";
         }
       }
 
