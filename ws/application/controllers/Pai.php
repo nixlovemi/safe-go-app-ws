@@ -217,7 +217,7 @@ class Pai extends CI_Controller {
           $sql2 = "
             SELECT COUNT(*) AS cnt
             FROM tb_pai_reset_senha
-            WHERE prs_pai_id = 1
+            WHERE prs_pai_id = $paiId
             AND prs_dtatendido IS NULL
           ";
           $query2 = $this->db->query($sql2);
