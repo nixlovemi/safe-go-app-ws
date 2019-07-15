@@ -27,7 +27,7 @@ class Pai extends CI_Controller {
 
       if($usuario == "" || $senha == ""){
         $arrRet["erro"] = true;
-        $arrRet["msg"]  = "Informe o usuário e a senha para prosseguir!";
+        $arrRet["msg"]  = "Informe o usuário e a senha para prosseguir! / Enter the username and password to proceed!";
       } else {
         $this->load->database();
 
@@ -50,20 +50,20 @@ class Pai extends CI_Controller {
 
         if(!$row){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Usuário ou senha inválidos!";
+          $arrRet["msg"]  = "Usuário ou senha inválidos! / Invalid username or password!";
         } else {
           if($row->pai_aprovado == NULL){
             $arrRet["erro"] = true;
-            $arrRet["msg"]  = "Esse usuário está aguardando aprovação!";
+            $arrRet["msg"]  = "Esse usuário está aguardando aprovação! / This user is waiting for approval!";
           } else if ($row->pai_aprovado == 0){
             $arrRet["erro"] = true;
-            $arrRet["msg"]  = "Esse usuário não está aprovado para fazer login!";
+            $arrRet["msg"]  = "Esse usuário não está aprovado para fazer login! / This user is not approved to login!";
           } else {
             $arrRow     = (array) $row;
             $jsonStrPai = json_encode($arrRow);
 
             $arrRet["erro"] = false;
-            $arrRet["msg"]  = "Login efetuado com sucesso";
+            $arrRet["msg"]  = "Login efetuado com sucesso! / Login done successfully!";
             $arrRet["Pai"]  = $jsonStrPai;
           }
         }
@@ -76,7 +76,7 @@ class Pai extends CI_Controller {
 
       $this->db->trans_rollback();
       $arrRet["erro"] = true;
-      $arrRet["msg"]  = "Erro ao executar Login! Msg: " . $e->getMessage();
+      $arrRet["msg"]  = "Erro ao executar Login! / Error while executing Login!";
       printaRetorno($arrRet);
       gravaLog("Login não executado. ArrRet: " . json_encode($arrRet));
 
@@ -104,7 +104,7 @@ class Pai extends CI_Controller {
 
       if($usuario == "" || $senha == "" || $nome == "" || $validade == "" || $idSolicitacao == ""){
         $arrRet["erro"] = true;
-        $arrRet["msg"]  = "Informe todos os campos para prosseguir!";
+        $arrRet["msg"]  = "Informe todos os campos para prosseguir! / Please fill all fields to proceed!";
       } else {
         $this->load->database();
 
@@ -127,22 +127,22 @@ class Pai extends CI_Controller {
 
         if($usuarioMinMaxTamanho){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Informe o usuário com no mínimo 3 e no máximo 60 caracteres!";
+          $arrRet["msg"]  = "Informe o usuário com no mínimo 3 e no máximo 60 caracteres! / Fill the user with a minimum of 3 and a maximum of 60 characters!";
         } else if($usuarioJaExiste){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Usuário já existente!";
+          $arrRet["msg"]  = "Usuário já existente! / User already exist!";
         } else if($senhaMinima){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Informe a senha com no mínimo 6 caracteres!";
+          $arrRet["msg"]  = "Informe a senha com no mínimo 6 caracteres! / Enter the password with at least 6 characters!";
         } else if($nomeMinMaxTamanho){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Informe o nome com no mínimo 3 e no máximo 40 caracteres!";
+          $arrRet["msg"]  = "Informe o nome com no mínimo 3 e no máximo 40 caracteres! / Enter the name with a minimum of 3 and a maximum of 40 characters!";
         } else if($validadeInvalida){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Informe a validade para uma data futura!";
+          $arrRet["msg"]  = "Informe a validade para uma data futura! / Please fill in a future date!";
         } else if($idSolicInvalida){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Não conseguimos encontrar a ID do solicitante!";
+          $arrRet["msg"]  = "Não conseguimos encontrar a ID do solicitante! / We could not find the requester ID!";
         } else {
           $usuarioEscaped       = $this->db->escape($usuario);
           $senhaEscaped         = $this->db->escape($md5Senha);
@@ -158,10 +158,10 @@ class Pai extends CI_Controller {
 
           if($this->db->error()["message"] != ""){
             $arrRet["erro"] = true;
-            $arrRet["msg"]  = "Erro ao cadastrar login temporário!";
+            $arrRet["msg"]  = "Erro ao cadastrar login temporário! / Error registering temporary login!";
           } else {
             $arrRet["erro"] = false;
-            $arrRet["msg"]  = "Login temporário cadastrado com sucesso!";
+            $arrRet["msg"]  = "Login temporário cadastrado com sucesso! / Temporary login registered successfully!";
           }
         }
       }
@@ -173,7 +173,7 @@ class Pai extends CI_Controller {
 
       $this->db->trans_rollback();
       $arrRet["erro"] = true;
-      $arrRet["msg"]  = "Erro ao cadastrar usuário temporário! Msg: " . $e->getMessage();
+      $arrRet["msg"]  = "Erro ao cadastrar usuário temporário! / Error registering temporary user!";
       printaRetorno($arrRet);
       gravaLog("Cadastro temporário não executado. ArrRet: " . json_encode($arrRet));
 
@@ -195,7 +195,7 @@ class Pai extends CI_Controller {
 
       if($login == ""){
         $arrRet["erro"] = true;
-        $arrRet["msg"]  = "Informe o usuário prosseguir!";
+        $arrRet["msg"]  = "Informe o usuário prosseguir! / Please inform the user to proceed!";
       } else {
         $this->load->database();
         $loginEscaped = $this->db->escape($login);
@@ -210,7 +210,7 @@ class Pai extends CI_Controller {
 
         if(!$row){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Usuário inválido! Verifique se você digitou o usuário corretamente.";
+          $arrRet["msg"]  = "Usuário inválido! Verifique se você digitou o usuário corretamente. / Invalid user! Make sure you typed the user correctly.";
         } else {
           $paiId = $row->pai_id;
 
@@ -225,7 +225,7 @@ class Pai extends CI_Controller {
 
           if(!$row2 || $row2->cnt > 0){
             $arrRet["erro"] = true;
-            $arrRet["msg"]  = "Você já tem uma solicitação de senha não atendida! Aguarde a escola entrar em contato.";
+            $arrRet["msg"]  = "Você já tem uma solicitação de senha não atendida! Aguarde a escola entrar em contato. / You already have an unanswered password request! Wait for the school to contact you.";
           } else {
             $paiIdEscaped = $this->db->escape($paiId);
             $hojeEscaped  = $this->db->escape(date("Y-m-d H:i:s"));
@@ -238,10 +238,10 @@ class Pai extends CI_Controller {
 
             if($this->db->error()["message"] != ""){
               $arrRet["erro"] = true;
-              $arrRet["msg"]  = "Erro ao solicitar alteração de senha!";
+              $arrRet["msg"]  = "Erro ao solicitar alteração de senha! / Error requesting password change!";
             } else {
               $arrRet["erro"] = false;
-              $arrRet["msg"]  = "Solicitação de senha enviada com sucesso! A escola entrará em contato em breve.";
+              $arrRet["msg"]  = "Solicitação de senha enviada com sucesso! A escola entrará em contato em breve. / Password request sent successfully! The school will contact you shortly.";
             }
           }
         }
@@ -254,7 +254,7 @@ class Pai extends CI_Controller {
 
       $this->db->trans_rollback();
       $arrRet["erro"] = true;
-      $arrRet["msg"]  = "Erro ao executar Login! Msg: " . $e->getMessage();
+      $arrRet["msg"]  = "Erro ao executar Login! / Error while executing Login!";
       printaRetorno($arrRet);
       gravaLog("Solicitação de senha não executada. ArrRet: " . json_encode($arrRet));
 

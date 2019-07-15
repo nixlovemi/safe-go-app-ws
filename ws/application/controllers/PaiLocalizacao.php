@@ -25,7 +25,7 @@ class PaiLocalizacao extends CI_Controller {
 
       if($paiId == "" || $latitude == "" || $longitude == ""){
         $arrRet["erro"] = true;
-        $arrRet["msg"]  = "Informe todos os dados para gravamos a localização!";
+        $arrRet["msg"]  = "Informe todos os dados para gravamos a localização! / Fill in all the data to save the location!";
       } else {
         $this->load->database();
 
@@ -43,12 +43,16 @@ class PaiLocalizacao extends CI_Controller {
 
         if($query != true){
           $arrRet["erro"] = true;
-          $arrRet["msg"]  = "Erro ao enviar localização!";
+          $arrRet["msg"]  = "Erro ao enviar localização! / Error sending location!";
         } else {
-          $strProblema    = ($problema) ? " do problema ": " ";
+          if($problema){
+            $strMsg = "Sucesso! Problema reportado. / Success! Problem reported!";
+          } else {
+            $strMsg = "Sucesso! Localização enviada. / Success! Location sent.";
+          }
 
           $arrRet["erro"] = false;
-          $arrRet["msg"]  = "Localização".$strProblema."enviada com sucesso!";
+          $arrRet["msg"]  = $strMsg;
         }
       }
 
@@ -59,7 +63,7 @@ class PaiLocalizacao extends CI_Controller {
 
       $this->db->trans_rollback();
       $arrRet["erro"] = true;
-      $arrRet["msg"]  = "Erro ao enviar localização! Msg: " . $e->getMessage();
+      $arrRet["msg"]  = "Erro ao enviar localização! / Error sending location!";
 
       printaRetorno($arrRet);
       gravaLog("Localização não enviada. ArrRet: " . json_encode($arrRet));
